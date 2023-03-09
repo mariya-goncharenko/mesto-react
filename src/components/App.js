@@ -10,27 +10,32 @@ function App() {
   const[isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const[isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const[isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [cards, ] = React.useState([]);
+  const[selectedCard, setSelectedCard]=React.useState(null);
+
 
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen)
-    //setIsOpen(!isOpen)
   }
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen)
-    //setIsOpen(!isOpen)
   }
 
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen)
-    //setIsOpen(!isOpen)
+  }
+
+  function handleCardClick(card) {
+    setSelectedCard(card);
   }
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setSelectedCard(null);
   }
 
 
@@ -41,6 +46,8 @@ function App() {
       onEditAvatar={handleEditAvatarClick}
       onEditProfile={handleEditProfileClick}
       onAddPlace={handleAddPlaceClick}
+      onCardClick={handleCardClick} 
+      cards={cards}
     />
     <Footer />
 
@@ -80,7 +87,7 @@ function App() {
                 <button className="popup__button-save popup__button-save_type_close" type="submit">Да</button>
             </PopupWithForm>
 
-            <ImagePopup onClose={closeAllPopups}/>
+            <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
   </div>
   );
