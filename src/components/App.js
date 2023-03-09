@@ -80,22 +80,10 @@ function App() {
                 <button className="popup__button-save popup__button-save_type_close" type="submit">Да</button>
             </PopupWithForm>
 
-            <ImagePopup />
+            <ImagePopup onClose={closeAllPopups}/>
 
   </div>
   );
 }
 
 export default App;
-
-
-/*
-Pop-up - удалить
-    <div className="popup popup_type_delete">
-        <div className="popup__container">
-        <button className="popup__close" type="button" aria-label="Закрыть"></button> 
-        <h2 className="popup__title">Вы уверены?</h2>
-        <button className="popup__button-save popup__button-save_type_close" type="submit">Да</button>
-        </div>
-    </div>
-*/
