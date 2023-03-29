@@ -1,22 +1,24 @@
 import React from "react";
+import { useContext, useState, useEffect } from "react";
 import { api } from "../utils/Api";
 import Card from "./Card";
+import CurrentUserContext from "../contexts/CurrentUserContext";
+import setCurrentUser from "./App"
 
 function Main({ onCardClick, onEditAvatar, onEditProfile, onAddPlace }) {
   //Для информации о пользователе:
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
+  const currentUser = useContext(CurrentUserContext);
+  //const [userName, setUserName] = React.useState("");
+  //const [userDescription, setUserDescription] = React.useState("");
+  //const [userAvatar, setUserAvatar] = React.useState("");
 
   //Для информации о карточках:
-  const [cards, setCards] = React.useState([]);
+  const [cards, setCards] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([userInfo, initialCards]) => {
-        setUserName(userInfo.name);
-        setUserDescription(userInfo.about);
-        setUserAvatar(userInfo.avatar);
+        setCurrentUser(userInfo);
         setCards(initialCards);
       })
       .catch((err) => {
@@ -25,8 +27,14 @@ function Main({ onCardClick, onEditAvatar, onEditProfile, onAddPlace }) {
   }, []);
 
   const cardElements = cards.map((card) => (
-    <Card key={card._id} card={card} onCardClick={onCardClick} />
-  ));
+    <Card
+    card={card}
+    key={card._id}
+    onCardClick={onCardClick}
+    />
+  ))
+
+  console.log(cards)
 
   return (
     <>
@@ -42,14 +50,14 @@ function Main({ onCardClick, onEditAvatar, onEditProfile, onAddPlace }) {
             ></button>
             <img
               className="profile__avatar"
-              src={userAvatar}
+              src={currentUser.avatar}
               alt="Ваша фотография"
             />
           </div>
 
           <div className="profile__info">
-            <h1 className="profile__name">{userName}</h1>
-            <p className="profile__job">{userDescription}</p>
+            <h1 className="profile__name">{currentUser.name}</h1>
+            <p className="profile__job">{currentUser.about}</p>
             <button
               className="profile__edit-profile"
               type="button"
@@ -66,7 +74,7 @@ function Main({ onCardClick, onEditAvatar, onEditProfile, onAddPlace }) {
           ></button>
         </section>
 
-        {/*<!Карточки с фотографиями*/}
+        {/*Карточки с фотографиями*/}
         <section className="elements">{cardElements}</section>
       </main>
     </>
