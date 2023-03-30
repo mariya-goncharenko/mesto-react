@@ -5,20 +5,27 @@ import Card from "./Card";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import setCurrentUser from "./App"
 
-function Main({ onCardClick, onEditAvatar, onEditProfile, onAddPlace }) {
+function Main({ onCardClick, onEditAvatar, onEditProfile, onAddPlace, onCardLike, onCardDelete }) {
   //Для информации о пользователе:
   const currentUser = useContext(CurrentUserContext);
-  //const [userName, setUserName] = React.useState("");
-  //const [userDescription, setUserDescription] = React.useState("");
-  //const [userAvatar, setUserAvatar] = React.useState("");
+  
 
   //Для информации о карточках:
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userInfo, initialCards]) => {
+    api
+      .getUserInfo()
+      .then((userInfo) => {
         setCurrentUser(userInfo);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    api
+      .getInitialCards()
+      .then((initialCards) => {
         setCards(initialCards);
       })
       .catch((err) => {
@@ -31,6 +38,8 @@ function Main({ onCardClick, onEditAvatar, onEditProfile, onAddPlace }) {
     card={card}
     key={card._id}
     onCardClick={onCardClick}
+    onCardDelete={onCardDelete}
+    onCardLike={onCardLike}
     />
   ))
 

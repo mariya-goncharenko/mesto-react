@@ -8,6 +8,7 @@ import ImagePopup from "./ImagePopup";
 import { api } from "../utils/Api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
+
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState("");
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState("");
@@ -28,7 +29,6 @@ function App() {
       });
     api.getInitialCards()
       .then((cardData) => {
-        console.log(cardData)
         setCards(cardData);
     })
     .catch((err) => {
@@ -53,6 +53,24 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handleCardLike(cards) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = cards.likes.some(i => i._id === currentUser._id);
+    
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.addLike(cards._id, !isLiked).then((newCard) => {
+        setCards((state) => state.map((c) => c._id === cards._id ? newCard : c));
+    });
+}
+
+function handleCardDelete(cards) {
+  api.deleteCardMetod(cards._id)
+    .then(() => {
+      setCards((prevCards) => prevCards.filter((c) => c._id !== cards._id));
+    })
+    .catch((err) => console.log(err));
+}
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -69,11 +87,13 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onCardClick={handleCardClick}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}
       />
       <Footer />
 
       <PopupWithForm
-        name="edit-avatar"S
+        name="edit-avatar"
         title="Обновить аватар"
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
