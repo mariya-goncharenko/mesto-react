@@ -8,34 +8,34 @@ import ImagePopup from "./ImagePopup";
 import { api } from "../utils/Api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState("");
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState("");
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState("");
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState('');
 
   const [currentUser, setCurrentUser] = React.useState({});
-  const [ , setCards] = React.useState([]);
-  
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     api.getUserInfo()
-      .then((userData) => {
-        setCurrentUser(userData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((userData) => {setCurrentUser(userData)})
+      .catch((err) => {console.log(err)})
+
     api.getInitialCards()
       .then((cardData) => {
-        setCards(cardData);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }, []);
-
+        setCards(
+          cardData.map((card) => ({
+            _id: card._id,
+            name: card.name,
+            link: card.link,
+            likes: card.likes,
+            owner: card.owner,
+          }))
+        )
+      })
+      .catch((err) => console.log(err))
+  }, [])
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -53,15 +53,15 @@ function App() {
     setSelectedCard(card);
   }
 
-  function handleCardLike(cards) {
-    const isLiked = cards.likes.some(i => i._id === currentUser._id);
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
     if (!isLiked) {
-        api.addLike(cards._id, true).then((newCard) => {
+        api.addLike(card._id, true).then((newCard) => {
             setCards((state) => state.map((c) => c._id === newCard._id ? newCard : c));
         });
     } 
     else {
-        api.deleteLike(cards._id).then((newCard) => {
+        api.deleteLike(card._id).then((newCard) => {
             setCards((state) => state.map((c) => c._id === newCard._id ? newCard : c));
         });
     }
@@ -85,9 +85,10 @@ function handleCardDelete(card) {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-<div className="page">
-      <Header />
-      <Main
+      <div className="page">
+        <Header />
+        <Main
+        cards={cards}
         onEditAvatar={handleEditAvatarClick}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
