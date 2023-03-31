@@ -3,35 +3,32 @@ import { useContext, useState, useEffect } from "react";
 import { api } from "../utils/Api";
 import Card from "./Card";
 import CurrentUserContext from "../contexts/CurrentUserContext";
-import setCurrentUser from "./App"
 
-function Main({ onCardClick, onEditAvatar, onEditProfile, onAddPlace, onCardLike, onCardDelete }) {
+function Main({onEditAvatar, onEditProfile, onAddPlace, onCardLike, onCardDelete , onCardClick}) {
   //Для информации о пользователе:
   const currentUser = useContext(CurrentUserContext);
-  
+  const { setCurrentUser } = useContext(CurrentUserContext);
 
   //Для информации о карточках:
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    api
-      .getUserInfo()
+    api.getUserInfo()
       .then((userInfo) => {
-        setCurrentUser(userInfo);
+        setCurrentUser(userInfo); 
       })
       .catch((err) => {
         console.log(err);
       });
 
-    api
-      .getInitialCards()
+    api.getInitialCards()
       .then((initialCards) => {
         setCards(initialCards);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [setCurrentUser]);
 
   const cardElements = cards.map((card) => (
     <Card
@@ -42,8 +39,6 @@ function Main({ onCardClick, onEditAvatar, onEditProfile, onAddPlace, onCardLike
     onCardLike={onCardLike}
     />
   ))
-
-  console.log(cards)
 
   return (
     <>
