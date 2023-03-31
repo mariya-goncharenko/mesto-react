@@ -1,4 +1,5 @@
 export default class Api {
+  
   constructor(options) {
     this._options = options;
   }
@@ -30,8 +31,8 @@ export default class Api {
       method: "PATCH",
       headers: this._options.headers,
       body: JSON.stringify({
-        name: data.nameInput,
-        about: data.jobInput,
+        name: data.name,
+        about: data.about,
       }),
     }).then((res) => this._getResponseData(res));
   }

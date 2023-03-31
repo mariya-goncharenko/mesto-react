@@ -12,9 +12,9 @@ import { api } from "../utils/Api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState("");
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState("");
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState("");
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
 
   const [currentUser, setCurrentUser] = React.useState({});
@@ -39,6 +39,15 @@ function App() {
       })
       .catch((err) => console.log(err))
   }, [])
+
+  function handleUpdateUser({name, about}) {
+    api.setEditUserInfo({name, about})
+      .then((data) => {
+        setCurrentUser(data);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -85,7 +94,6 @@ function handleCardDelete(card) {
     setIsAddPlacePopupOpen(false);
     setSelectedCard(null);
   }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -102,7 +110,7 @@ function handleCardDelete(card) {
       <Footer />
 
       <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
-      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
       <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
       
 
