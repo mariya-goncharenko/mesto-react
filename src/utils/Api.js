@@ -79,7 +79,7 @@ export default class Api {
       method: "PATCH",
       headers: this._options.headers,
       body: JSON.stringify({
-        avatar: data.AvatarInput,
+        avatar: data.avatar,
       }),
     }).then((res) => this._getResponseData(res));
   }
