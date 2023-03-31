@@ -16,6 +16,7 @@
 @import url(./blocks/elements/elements.css);
 @import url(./blocks/element/element.css);
 @import url(./blocks/element/__delete-card/element__delete-card.css);
+@import url(./blocks/element/__delete-card/_type/element__delete-card_type_active.css);
 @import url(./blocks/element/__img/element__img.css);
 @import url(./blocks/element/__info/element__info.css);
 @import url(./blocks/element/__title/element__title.css);
