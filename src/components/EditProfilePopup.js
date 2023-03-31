@@ -1,12 +1,13 @@
 import React from "react";
+import { useContext, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   // Подписка на контекст
-  const currentUser = React.useContext(CurrentUserContext);
-  const [name, setName] = React.useState(currentUser.name || "");
-  const [about, setAbout] = React.useState(currentUser.about || "");
+  const currentUser = useContext(CurrentUserContext);
+  const [name, setName] = useState(currentUser.name || "");
+  const [about, setAbout] = useState(currentUser.about || "");
 
   function handleNameChange(event) {
     setName(event.target.value);

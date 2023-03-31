@@ -3,19 +3,27 @@ import { useContext } from "react";
 import Card from "./Card";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-function Main({cards, onEditAvatar, onEditProfile, onAddPlace, onCardLike, onCardDelete , onCardClick}) {
+function Main({
+  cards,
+  onEditAvatar,
+  onEditProfile,
+  onAddPlace,
+  onCardLike,
+  onCardDelete,
+  onCardClick,
+}) {
   //Для информации о пользователе:
   const currentUser = useContext(CurrentUserContext);
 
   const cardElements = cards.map((card) => (
     <Card
-    card={card}
-    key={card._id}
-    onCardClick={onCardClick}
-    onCardDelete={onCardDelete}
-    onCardLike={onCardLike}
+      card={card}
+      key={card._id}
+      onCardClick={onCardClick}
+      onCardDelete={onCardDelete}
+      onCardLike={onCardLike}
     />
-  ))
+  ));
 
   return (
     <>

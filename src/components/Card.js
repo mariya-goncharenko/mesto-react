@@ -1,8 +1,8 @@
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { useContext } from "react";
 
-function Card({card, onCardClick, onCardLike, onCardDelete}) {
-  const currentUser = useContext(CurrentUserContext)
+function Card({ card, onCardClick, onCardLike, onCardDelete }) {
+  const currentUser = useContext(CurrentUserContext);
 
   function handleClick() {
     onCardClick(card);
@@ -19,15 +19,18 @@ function Card({card, onCardClick, onCardLike, onCardDelete}) {
   // Определяем, являемся ли мы владельцем текущей карточки
   const isOwn = card.owner._id === currentUser._id;
 
+  // Далее в разметке используем переменную для условного рендеринга
+  const deleteButtonClassName = `element__delete-card ${
+    isOwn ? "element__delete-card_type_active" : ""
+  }`;
 
-// Далее в разметке используем переменную для условного рендеринга
-  const deleteButtonClassName = `element__delete-card ${isOwn ? 'element__delete-card_type_active' : ''}`;
+  // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
+  const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-// Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-const isLiked = card.likes.some(i => i._id === currentUser._id);
-
-// Создаём переменную, которую после зададим в `className` для кнопки лайка
-  const cardLikeButtonClassName = `element__like-photo ${isLiked ? 'element__like-photo_active' : ''}`;
+  // Создаём переменную, которую после зададим в `className` для кнопки лайка
+  const cardLikeButtonClassName = `element__like-photo ${
+    isLiked ? "element__like-photo_active" : ""
+  }`;
 
   return (
     <div className="element">
