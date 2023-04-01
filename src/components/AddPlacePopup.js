@@ -1,19 +1,17 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
-  const nameInputRef = useRef();
-  const linkInputRef = useRef();
 
   function handleSubmit(e) {
     e.preventDefault();
 
     onAddPlace({
-      name: nameInputRef.current.value,
-      link: linkInputRef.current.value,
+      name: name,
+      link: link,
     });
   }
 
@@ -32,6 +30,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isDisabled={!name || !link}
+      buttonText={"Создать"}
     >
       <div className="popup__label">
         <input
@@ -43,7 +43,6 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           minLength="2"
           maxLength="30"
           placeholder="Название места"
-          ref={nameInputRef}
           value={name}
           onChange={handleNameChange}
         />
@@ -57,21 +56,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
           id="linkInput"
           required
           placeholder="Ссылка на изображение"
-          ref={linkInputRef}
           value={link}
           onChange={handleLinkChange}
         />
         <span className="linkInput-error error"></span>
       </div>
-      <button
-        className={`popup__button-save ${
-          name && link ? "" : "popup__button-save_disabled"
-        }`}
-        type="submit"
-        disabled={!name || !link}
-      >
-        Создать
-      </button>
     </PopupWithForm>
   );
 }

@@ -65,7 +65,7 @@ export default class Api {
   }
 
   //Метод для удаления карточки:
-  deleteCardMetod(cardId) {
+  deleteCardMethod(cardId) {
     return fetch(this._options.baseUrl + "/cards/" + cardId, {
       method: "DELETE",
       headers: this._options.headers,

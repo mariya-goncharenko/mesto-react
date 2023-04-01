@@ -20,6 +20,8 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isDisabled={!avatarRef}
+      buttonText={"Сохранить"}
     >
       <div className="popup__label">
         <input
@@ -33,15 +35,6 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         />
         <span className="AvatarInput-error error"></span>
       </div>
-      <button
-        className={`popup__button-save ${
-          avatarRef ? "" : "popup__button-save_disabled"
-        }`}
-        type="submit"
-        disabled={!avatarRef}
-      >
-        Сохранить
-      </button>
     </PopupWithForm>
   );
 }
