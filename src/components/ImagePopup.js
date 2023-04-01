@@ -1,4 +1,4 @@
-function ImagePopup({card, onClose}) {
+function ImagePopup({ card, onClose }) {
   return (
     <div className={`popup popup_type_img ${card ? "popup_opened" : ""}`}>
       <figure className="popup__img-container">
@@ -8,14 +8,8 @@ function ImagePopup({card, onClose}) {
           aria-label="Закрыть"
           onClick={onClose}
         ></button>
-        <img
-          className="popup__img"
-          src={card ? card.link : ""}
-          alt={card ? card.name : ""}
-        />
-        <figcaption className="popup__img-title">
-          {card ? card.name : ""}
-        </figcaption>
+        <img className="popup__img" src={card?.link} alt={card?.name} />
+        <figcaption className="popup__img-title">{card?.name}</figcaption>
       </figure>
     </div>
   );

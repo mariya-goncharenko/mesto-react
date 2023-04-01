@@ -1,13 +1,18 @@
 import React from "react";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   // Подписка на контекст
   const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState(currentUser.name || "");
-  const [about, setAbout] = useState(currentUser.about || "");
+  const [name, setName] = useState("");
+  const [about, setAbout] = useState("");
+
+  useEffect(() => {
+    setName(currentUser.name || "");
+    setAbout(currentUser.about || "");
+  }, [currentUser, isOpen]);
 
   function handleNameChange(event) {
     setName(event.target.value);
@@ -32,6 +37,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isDisabled={!name || !about}
+      buttonText={"Сохранить"}
     >
       <div className="popup__label">
         <input
@@ -63,15 +70,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         />
         <span className="jobInput-error error"></span>
       </div>
-      <button
-        className={`popup__button-save ${
-          name && about ? "" : "popup__button-save_disabled"
-        }`}
-        type="submit"
-        disabled={!name || !about}
-      >
-        Сохранить
-      </button>
     </PopupWithForm>
   );
 }
